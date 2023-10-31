@@ -361,7 +361,7 @@
             $("#newtd").append(newRow);
             $("#showproduct").text("");
             $("#quantityInput").val("");
-            $("#showitemprice").text("");
+            $("#showitemprice").text(""); 
             $("#showitemdisc").text("");
             $("#avasqrft").val("");
             $("#sqftSpan").val("");
