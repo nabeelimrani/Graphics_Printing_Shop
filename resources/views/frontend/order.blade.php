@@ -370,6 +370,7 @@
 
              // Calculate the gross total
     calculateGrossTotal();
+    
         });
 
         $("#quantityInput, #showproduct, #showitemprice, #showitemdisc, #avasqrft, #sqftSpan, #totalSpan").prop('disabled', true);
