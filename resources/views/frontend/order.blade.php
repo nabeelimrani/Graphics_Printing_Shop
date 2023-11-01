@@ -395,7 +395,7 @@
             $("#avasqrft").val("");
             $("#sqftSpan").val("");
             $("#totalSpan").text("");
-            $("#showcategory").text("");
+           
 
              // Calculate the gross total
     calculateGrossTotal();
