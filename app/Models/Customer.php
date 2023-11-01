@@ -16,4 +16,8 @@ class Customer extends Model
     {
         return $this->belongsTo(Area::class, 'Area_ID', 'id');
     }
+         public function orders()
+    {
+       return $this->HasMany("App\Models\Order");
+    }
 }

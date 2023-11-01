@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Order;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -51,6 +52,15 @@ class HomeController extends Controller
         $user = User::count();
 
         return view('frontend.profile')->with('customer',$customer)->with('productcount',$productcount)->with('user',$user);
+    }
+    public function invoice()
+    {
+            $order = Order::orderBy('id', 'desc')->first();
+           $customer=$order->customer;
+           $prods=$order->products;
+          
+
+        return view("frontend.invoice")->with("customer",$customer)->with("order",$order)->with("prods",$prods);
     }
     
 }

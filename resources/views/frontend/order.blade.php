@@ -14,7 +14,7 @@
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                             <li class="breadcrumb-item active">Order</li>
                         </ol>
-                        <a href="{{ route('areaview') }}" class="btn btn-info">View Order</a>
+                        <a href="{{ route('orderView') }}" class="btn btn-info">View Order</a>
                     </div>
                 </div>
             </div>
@@ -172,6 +172,13 @@
                     <p id="customerdisc">Discount: </p>
                     <h4 id="grandtotal">Grand Total: </h4>
                 </div>
+               
+            </div>
+            <div class="offset-9 col-md-3">
+                 <div class="my-3">
+                    <button class="btn btn-primary" id="submitbtn">Submit</button>
+                    <button class="btn btn-primary" >Print And Submit</button>
+                </div>
             </div>
         </div>
     </div>
@@ -194,10 +201,14 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    var customerID="";
     $(document).ready(function () 
     {
+     
         $("#customer").on('change', function () {
             var selectedcustomer = $(this).val();
+            customerID = $(this).val();
+
             $.ajax({
                 url: '/get-disc/' + selectedcustomer,
                 method: 'GET',
@@ -242,6 +253,7 @@
                     url: '/get-products/' + selectedCategory,
                     method: 'GET',
                     success: function (data) {
+                        
                         productSelect.prop('disabled', false);
                         productSelect.empty();
                         productSelect.append($('<option>', {
@@ -268,6 +280,23 @@
                     }
                 });
             }
+        });
+           $("#quantityInput").on("blur",function()
+        {
+            var name=$("#showproduct").text();
+            var val=$(this).val();
+            
+            $.ajax({
+                url: '/checkqty',
+                data:{name:name,qty:val},
+                method: 'GET',
+                success: function(data) 
+                {
+                    if(data==1)
+                        alert("can't sell quantity too high low stock")
+
+            }
+            });
         });
 
         $("#product").on('change', function () {
@@ -438,9 +467,75 @@ function calculateGrossTotal() {
         }
     });
 
-    // Display the gross total
+    
     $("#grosstotal").text("Gross Total: " + grossTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "/-");
+
+    var discountText = $("#customerdisc").text(); // Assuming $("#customerdisc") contains the 
+    var discountValue = parseInt(discountText.match(/\d+/)[0]); 
+
+    var discountAmount = (grossTotal * discountValue) / 100;
+    var grandTotal = grossTotal - discountAmount;
+    $("#grandtotal").text("Grand Total:"+grandTotal+"/-");
 }
+
+$(document).on("click","#submitbtn",function(){
+var dataArray = [];
+$('#newtd tr').each(function() {
+    // Get the values of <td> elements within current <tr>
+    var column1 = $(this).find('td:eq(0)').text(); // First <td>
+    var column2 = $(this).find('td:eq(1)').text(); // Second <td>
+    var column3 = $(this).find('td:eq(2)').text(); // Third <td>
+    var column4 = $(this).find('td:eq(3)').text().replace('/-', ''); // Fourth <td> without '/-'
+    var column5 = $(this).find('td:eq(4)').text().replace('%', ''); // Fifth <td> without '%'
+    var column6 = $(this).find('td:eq(5)').text(); // Sixth <td>
+    var column7 = $(this).find('td:eq(6)').text().replace('/-', ''); // Seventh <td> without '/-'
+    
+     if(column5=="---")
+    {
+        column5=null;
+    }
+    dataArray.push({
+        code: column1,
+        itemName: column2,
+        quantity: column3,
+        rate: column4,
+        dis: column5,
+        sqrFt: column6,
+        total: column7
+    });
+});
+        var discountText = $("#customerdisc").text(); 
+        
+    var discountValue = parseInt(discountText.match(/\d+/)[0]); 
+
+    var grandtotal=$("#grandtotal").text();
+    var gtotal=parseInt(grandtotal.match(/\d+/)[0]);
+
+    var req={
+        
+        data:dataArray,
+        cid:customerID,
+        grandTotal:gtotal,
+        discount:discountValue,
+    }
+ $.ajax({
+                url: '/storeorder', 
+                type: 'GET',
+                dataType: 'json',
+                data: req,
+                success: function(data) {
+                   alert(data.output);
+                },
+                error: function(error) {
+         console.error('Error sending data:', error);
+     }
+            });
+       
+
+
+});
+
+
 
    });
 </script>

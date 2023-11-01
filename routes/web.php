@@ -13,7 +13,9 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
+Route::get('/checkqty', [ProductController::class, 'checkqty']);
+Route::get('/order/view', [OrderController::class, 'orderView'])->name("orderView");
+Route::get('/invoice',[HomeController::class, 'invoice']);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 
@@ -30,6 +32,7 @@ Route::post('/customer/store', [CustomerController::class, 'customerstore'])->na
 Route::get('/customer/view', [CustomerController::class, 'customerview'])->name('customerview');
 Route::post('/customer/del/{id}', [CustomerController::class, 'customerdel'])->name('customerdel');
 Route::post('/customer/edit/{id}', [CustomerController::class, 'customeredit'])->name('customeredit');
+Route::get('/storeorder', [OrderController::class, 'store']);
 
 Route::get('/product', [ProductController::class, 'product'])->name('product');
 Route::post('/product/store', [ProductController::class, 'productstore'])->name('productstore');

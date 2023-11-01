@@ -13,7 +13,22 @@ use Hash;
 class ProductController extends Controller
 {
     
-      
+      public function checkqty(Request $request)
+      {
+
+            $name=$request->name;
+            $qty=$request->qty;
+            $product=Product::where("Name",$name)->first();
+            $nqty=$product->Quantity;
+            if($nqty<$qty)
+            {
+    return 1        ;  
+       }
+            else
+            {
+            return 0;
+            }
+                  }
     public function product()
     {
         $category = Category::all();

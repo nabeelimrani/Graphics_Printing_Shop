@@ -7,7 +7,7 @@
   <title>HN Wedding Shop</title>
   <link rel="icon" href="{{ asset('icon/wedding.png') }}">
   <link rel="stylesheet" href="{{ asset('frontend/plugins/fontawesome-free/css/all.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('frontend/dist/css/adminlte.min.css') }}">
+  <!-- <link rel="stylesheet" href="{{ asset('frontend/dist/css/adminlte.min.css') }}"> -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="{{ asset('fontawesome/css/fontawesome.min.css') }}">
   <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
@@ -28,7 +28,9 @@
   <!-- Toastr -->
   <link rel="stylesheet" href="{{asset('frontend/plugins/toastr/toastr.min.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+ 
   <style>
+
 
     </style>
 </head>
