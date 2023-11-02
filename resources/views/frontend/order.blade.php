@@ -42,7 +42,7 @@
                             <div class="form-group ">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <div class="input-group">
+                                        <div class="input-group" >
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text "><i class="fas fa-user"></i></span>
                                             </div>
@@ -62,7 +62,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-folder"></i></span>
                                             </div>
-                                            <select name="categoryfield" id="category" class="form-control">
+                                            <select name="categoryfield" id="category"  class="form-control" disabled>
                                                 <option value="" selected disabled>Select Category or Find...</option>
                                                 @foreach($category as $categorydata)
                                                 <option value="{{$categorydata->id}}">{{$categorydata->Name}}</option>
@@ -79,7 +79,7 @@
             <span class="input-group-text"><i class="fas fa-shopping-cart"></i></span>
         </div>
         <select name="productfield" id="product" class="form-control" disabled>
-            <option disabled selected>Please select a category first...</option>
+            <option disabled selected>Please select a Category first...</option>
             
         </select>
     </div>
@@ -97,6 +97,7 @@
         <tr>
             <th class="text-center">Category</th>
             <th class="text-center">Item Name</th>
+            <th class="text-center">Total Quantity</th>
             <th class="text-center">Quantity</th>
             <th class="text-center">Available SqrFt</th>
             <th class="text-center">Sale SqrFt</th>
@@ -113,6 +114,9 @@
             </td>
             <td class="text-center" style="padding: 0; margin: 0;">
                 <span id="showproduct"></span>
+            </td>
+            <td class="text-center" style="padding: 0; margin: 0;">
+                <input type="number" id="totalquantity" class="form-control text-center" style="width: 100%; border:none;">
             </td>
             <td class="text-center" style="padding: 0; margin: 0;">
                 <input type="number" id="quantityInput" class="form-control text-center" style="width: 100%; border:none;">
@@ -167,9 +171,9 @@
 </div>
 </div>
             <div class="offset-9 col-md-3">
-                <div class="bg-light p-3 float-left">
-                    <p id="grosstotal">Gross Total: </p>
-                    <p id="customerdisc">Discount: </p>
+                <div class="bg-light float-left">
+                    <h5 id="grosstotal">Gross Total: </h5>
+                    <h5 id="customerdisc">Discount: </h5>
                     <h4 id="grandtotal">Grand Total: </h4>
                 </div>
                
@@ -203,11 +207,14 @@
 <script>
     var customerID="";
     $(document).ready(function () 
-    {
+    { 
+        $("#category").prop('disabled', true);
      
         $("#customer").on('change', function () {
+
             var selectedcustomer = $(this).val();
             customerID = $(this).val();
+        $("#category").prop('disabled', false);
 
             $.ajax({
                 url: '/get-disc/' + selectedcustomer,
@@ -219,6 +226,7 @@
                     } else {
                         $("#customerdisc").html("Discount: 0.0%");
                     }
+                    
                 }
             });
         });
@@ -228,6 +236,7 @@
             $("#showitemprice").text("");
             $("#showitemdisc").text("");
             $("#quantityInput").val("");
+            $("#totalquantity").val("");
             $("#sqftSpan").val("");
             $("#avasqrft").val("");
             $("#totalSpan").text("");
@@ -261,6 +270,7 @@
     text: 'Select Product or Find...',
     disabled: true,
     selected: true
+                            
 }));
                         if (data.length === 0) {
                             productSelect.append($('<option>', {
@@ -273,15 +283,25 @@
                                     value: product.id,
                                     text: product.Name
                                 }));
+                              
+                                if (product.SqrFt) {
+        $("#avasqrft").prop('disabled', false);
+    } else {
+        $("#avasqrft").prop('disabled', true);
+
+    }
+    
                             });
-                            productSelect.find('option:first').prop('selected', true);
+                           
                            
                         }
+                       
+
                     }
                 });
             }
         });
-           $("#quantityInput").on("blur",function()
+           $("#quantityInput").on("change",function()
         {
             var name=$("#showproduct").text();
             var val=$(this).val();
@@ -293,7 +313,10 @@
                 success: function(data) 
                 {
                     if(data==1)
-                        alert("can't sell quantity too high low stock")
+                    alert("Sorry, the product is in low stock. We can't sell the requested quantity at the moment. Please contact support for assistance.");
+                    $("#saveRow").prop('disabled', true);
+                    if(data==0)
+                    $("#saveRow").prop('disabled', false);
 
             }
             });
@@ -305,14 +328,19 @@
             var showItemPriceElement = $("#showitemprice");
             var showItemDiscElement = $("#showitemdisc");
             var quantityInput = $("#quantityInput");
+            var totalquantity = $("#totalquantity");
             var sqftSpan = $("#sqftSpan");
             var totalSpan = $("#totalSpan");
+           
             $("#showproduct").text("");
             $("#showitemprice").text("");
             $("#showitemdisc").text(" ");
             $("#quantityInput").val("");
             $("#quantityInput").prop('disabled', false);
-            $("#sqftSpan").val("---");
+              $("#totalquantity").val("");
+            $("#totalquantity").prop('disabled', true);
+            $("#sqftSpan").val("");
+            
             $("#totalSpan").text("");
 
             if (selectedProduct) {
@@ -322,14 +350,14 @@
                     success: function (data) {
                         showProductElement.text(data.Name);
                         showItemPriceElement.text(data.Rate + "/-");
-                        
+                        totalquantity.val(data.Quantity);
                         if (!data.Disc) {
                             showItemDiscElement.text("---");
                         } else {
                             showItemDiscElement.text(data.Disc + ".00%");
                         }
 
-                        if (data.SqrFt == null) {
+                        if (!data.SqrFt) {
                             $("#sqftSpan").val("---");
                         }
                         else
@@ -356,9 +384,11 @@
             } else {
                 showProductElement.empty();
                 showItemPriceElement.empty();
-                sqftSpan.empty('---');
+                sqftSpan.empty();
+                avasqrf.empty();
                 totalSpan.empty();
                 quantityInput.val('');
+                totalquantity.val('');
             }
         });
 
@@ -402,7 +432,7 @@
     
         });
 
-        $("#quantityInput, #showproduct, #showitemprice, #showitemdisc, #avasqrft, #sqftSpan, #totalSpan").prop('disabled', true);
+        $("#quantityInput,#totalquantity, #showproduct, #showitemprice, #showitemdisc, #avasqrft, #sqftSpan, #totalSpan").prop('disabled', true);
        
         $(document).on('click', '.delete-row', function () {
     var row = $(this).closest('tr');
@@ -414,6 +444,7 @@
 
     // Subtract the deleted row's total from the gross total
     updateGrossTotal(-total);
+    $("#grandtotal").text("Grand Total:  ");
 });
 function updateGrossTotal(amount) {
     var grossTotalElement = $("#grosstotal");
@@ -456,6 +487,8 @@ $(document).on('click', '.edit-row', function () {
 
     // Remove the row
     row.remove();
+    $("#grandtotal").text("Grand Total:  ");
+
 });
 function calculateGrossTotal() {
     var grossTotal = 0;
