@@ -2,6 +2,30 @@
 
 @section('main-section')
 
+<style>
+  .product-description {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+   
+   
+    border-radius: 15px;
+    text-align: left;
+  }
+
+  .product-description strong {
+    font-weight: bold;
+  }
+
+  .discount {
+    color: #e74c3c;
+  }
+
+  .size {
+    color: #3498db;
+  }
+</style>
+
+
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">
@@ -25,13 +49,13 @@
           <!-- Card 1: New Orders -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>150</h3>
+              <h3>{{{$order}}}</h3>
               <p>New Orders</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{route('orderView')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <div class="col-lg-3 col-6">
@@ -128,7 +152,7 @@
                 </div>
                 <!-- /.user-block -->
                 <div class="card-tools">
-                <span class="badge badge-success">Favourite Articles</span>
+                <span class="badge badge-success">Favourite Cards Design</span>
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
                   </button>
                  
@@ -213,9 +237,19 @@
                     <div class="product-info">
                       <a href="javascript:void(0)" class="product-title">{{$productdata->Name}}
                         <span class="badge badge-warning float-right">PKR-{{$productdata->Rate}}/-</span></a>
-                      <span class="product-description">
-                       <strong>Discount: {{$productdata->Disc}}%</strong> &nbsp;|&nbsp;
-                       <strong>Size: {{$productdata->SqrFt}}cm</strong>    </span>
+                        <div class="product-description">
+    @if($productdata->Disc)
+    <strong class="discount">Discount: {{$productdata->Disc}}%</strong> &nbsp;&nbsp;
+    @endif
+    @if($productdata->SqrFt)
+    <strong class="size">Size: {{$productdata->SqrFt}}cm</strong> 
+    @endif
+    @if(!$productdata->SqrFt && !$productdata->Disc)
+    <strong>---</strong> 
+    @endif
+</div>
+                       
+
                     </div>
                   </li>
                   <!-- /.item -->
@@ -241,9 +275,7 @@
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
+                 
                 </div>
               </div>
               
@@ -309,7 +341,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer text-center">
-                <a href="javascript:void(0)" class="uppercase">View All Orders</a>
+                <a href="{{route('orderView')}}" class="uppercase">View All Orders</a>
               </div>
               <!-- /.card-footer -->
             </div>
