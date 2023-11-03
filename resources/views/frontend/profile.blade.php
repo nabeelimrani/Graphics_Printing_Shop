@@ -1,7 +1,9 @@
 @extends('frontend.layouts.main')
 
 @section('main-section')
-
+@push('title')
+<title>Profile - Hassan Graphics & Printing</title>
+@endpush
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">

@@ -1,6 +1,9 @@
 @extends('frontend.layouts.main')
 
 @section('main-section')
+@push('title')
+<title>Order - Hassan Graphics & Printing</title>
+@endpush
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -181,7 +184,7 @@
             <div class="offset-9 col-md-3">
                  <div class="my-3">
                     <button class="btn btn-primary" id="submitbtn">Submit</button>
-                    <button class="btn btn-primary" >Print And Submit</button>
+                 
                 </div>
             </div>
         </div>
@@ -321,6 +324,27 @@
             }
             });
         });
+         $("#avasqrft").on("change",function()
+        {
+            var name=$("#showproduct").text();
+            var val=$(this).val();
+            
+            $.ajax({
+                url: '/checksqrft',
+                data:{name:name,qty:val},
+                method: 'GET',
+                success: function(data) 
+                {
+                    if(data==1)
+                    alert("Sorry, the product is in low stock. We can't sell the requested Sqrft at the moment. Please contact support for assistance.");
+                    $("#saveRow").prop('disabled', true);
+                    if(data==0)
+                    $("#saveRow").prop('disabled', false);
+
+            }
+            });
+        });
+
 
         $("#product").on('change', function () {
             var selectedProduct = $(this).val();
@@ -557,7 +581,8 @@ $('#newtd tr').each(function() {
                 dataType: 'json',
                 data: req,
                 success: function(data) {
-                   alert(data.output);
+                   
+                    window.location.href="/invoice";
                 },
                 error: function(error) {
          console.error('Error sending data:', error);

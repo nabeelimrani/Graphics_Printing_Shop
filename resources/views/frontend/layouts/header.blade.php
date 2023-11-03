@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>HN Wedding Shop</title>
+  @stack('title')
+
   <link rel="icon" href="{{ asset('icon/wedding.png') }}">
   <link rel="stylesheet" href="{{ asset('frontend/plugins/fontawesome-free/css/all.min.css') }}">
   <!-- <link rel="stylesheet" href="{{ asset('frontend/dist/css/adminlte.min.css') }}"> -->
@@ -28,7 +29,7 @@
   <!-- Toastr -->
   <link rel="stylesheet" href="{{asset('frontend/plugins/toastr/toastr.min.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
- 
+
   <style>
 
 
@@ -59,10 +60,12 @@
 
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="{{route('home')}}" class="brand-link">
-      <img src="{{ asset('icon/wedding.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">HN Wedding Shop</span>
-    </a>
+  <a href="{{ route('home') }}" class="brand-link d-flex align-items-center">
+    <img src="{{ asset('icon/wedding.png') }}" alt="Hassan Graphics & Printing" class="img-fluid img-circle" width="50" height="50">
+    <b class="brand-text font-weight-bold ml-3" style="font-size: 14.5px;">Hassan Graphics & Printing</b>
+</a>
+
+
     <div class="sidebar">
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">

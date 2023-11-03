@@ -14,7 +14,11 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/checkqty', [ProductController::class, 'checkqty']);
+Route::get('/checksqrft', [ProductController::class, 'checksqrft']);
+Route::get('/order/delorder', [OrderController::class, 'delorder']);
+Route::get('/order/delproduct', [OrderController::class, 'delproduct']);
 Route::get('/order/view', [OrderController::class, 'orderView'])->name("orderView");
+Route::get('/order/getDeails/{id}', [OrderController::class, 'getDetails']);
 Route::get('/invoice',[HomeController::class, 'invoice']);
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');

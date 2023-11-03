@@ -1,6 +1,9 @@
 @extends('frontend.layouts.main')
 
 @section('main-section')
+@push('title')
+<title>Area - Hassan Graphics & Printing</title>
+@endpush
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">

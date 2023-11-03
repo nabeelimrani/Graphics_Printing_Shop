@@ -14,6 +14,108 @@ use Carbon;
 
 class OrderController extends Controller
 {
+
+    public function delorder(Request $request)
+    {
+        $id=$request->id;
+        $order=Order::find($id);
+
+        if($order->products)
+        {
+        foreach($order->products as $pro)
+        {
+        $qty = $pro->pivot->quantity;
+        $sqrFt=$pro->pivot->sqrFt;
+        if($sqrFt)
+        {
+            $pro->update(["SqrFt"=>$pro->SqrFt+$sqrFt]);
+        }
+        $pro->update(["Quantity"=>$pro->Quantity+$qty]);
+        }
+    }
+
+        $order->products()->detach();
+        $order->delete();
+        return "done";
+    }
+    public function delproduct(Request $request)
+    {
+$orderId = $request->order;
+$proId = $request->product;
+$order = Order::find($orderId);
+$product = $order->products()->where("product_id", $proId)->first();
+$sqrFt=$product->pivot->sqrFt;
+
+$qty=$product->pivot->quantity;
+$order->products()->detach($proId);
+$product=Product::find($proId);
+if($sqrFt!=null)
+{
+ $product->update(["SqrFt"=>$product->SqrFt+$sqrFt]);   
+}
+$product->update(["Quantity"=>$product->Quantity+$qty]);
+return "done";
+
+    }
+    public function getDetails($id)
+    {
+        $order=Order::find($id);
+        $str="
+            <table class='table table-sm table-striped text-dark table-bordered'>
+        <thead >
+            <tr  >
+                <th class='text-center' >sno</th>
+                <th class='text-center'>Name</th>
+                <th class='text-center'>Quantity</th>
+                <th class='text-center'>SqrFt</th>
+                <th class='text-center'>discount</th>
+                <th class='text-center'>Total</th>
+               
+                <th class='text-center'>Action</th>
+               
+            </tr>
+        </thead>
+        <tbody>";
+
+      foreach($order->products as $index=>$pro)
+      {
+       
+        $i=$index+1;
+        $dis="";
+        $sqrFt=null;
+        if($pro->pivot->sqrFt)
+        {
+            $sqrFt=$pro->pivot->sqrFt."sqrFt";
+        }
+       
+        if($pro->pivot->discount)
+         {   $dis=$pro->pivot->discount."%";}
+        else
+          {  $dis="---";}
+      
+        $str.="<tr>
+    <td>{$i}</td>
+    <td>{$pro->Name}</td>
+    <td>{$pro->pivot->quantity}</td>
+    <td>{$sqrFt}</td>
+    <td>{$dis}</td>
+    <td>{$pro->pivot->total}/-</td>
+    <td>
+ <button class='btn btn-danger btn-delete btn-sm btn-group deleteproduct' data-bs-oid={$order->id}
+data-bs-id={$pro->id}
+  >
+        <i class='fas fa-trash-alt'></i> 
+    </button>
+    </td>
+</tr>
+        ";
+      }
+      $str.="</tbody>
+      </table>";
+
+       return response()->json($str);
+      
+    }
     public function store(Request $request)
     {
         
@@ -28,15 +130,26 @@ class OrderController extends Controller
             
         $product=Product::where("Name",$x["itemName"])->first();
         $pid=$product->id;
+        $sqrFt=null;
+        if($x["sqrFt"]!=null)
+        {
+            $sqrFt=$product->SqrFt;
+            $sqrFt=$sqrFt-$x["sqrFt"];
+            $product->update(["sqrFt"=>$sqrFt]);
+            $sqrFt=$x["sqrFt"];
+        }
+
         $qty=$product->Quantity;
         $newQty=$qty-$x["quantity"];
         $product->update(["Quantity"=>$newQty]);
+
+
                 $or->products()->attach($pid,[
 
                 "quantity"=>$x["quantity"],
                 "purchase"=>$x["rate"],
                 "discount"=>$x["dis"],
-                "sqrFt"=>$x["sqrFt"],
+                "sqrFt"=> $sqrFt,
                 "total"=>$x["total"],
             ]);
                   

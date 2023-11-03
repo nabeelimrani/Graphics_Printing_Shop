@@ -1,6 +1,9 @@
 @extends('frontend.layouts.main')
 
 @section('main-section')
+@push('title')
+<title>Order View - Hassan Graphics & Printing</title>
+@endpush
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -12,7 +15,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{ route('order') }}">Order</li>
+                            <li class="breadcrumb-item active"><a href="{{ route('order') }}">Order</a></li>
                         </ol>
                        
                     </div>
@@ -21,7 +24,7 @@
         </div>
     </section>
 
-    <section class="content ">
+    <section >
         <div class="container-fluid ">
             <div class="row ">
                 <div class="col-md-12 ">
@@ -58,14 +61,13 @@
            	<td class="text-center">
            		{{$order->discount}}%
            	</td>
-             <td class="text-center">
-    <button class="btn btn-info btn-details btn-sm btn-group" title="Details">
+             <td >
+             <button class="btn btn-info btn-sm btn-group details" data-bs-id="{{$order->id}}" >
         <i class="fas fa-info-circle"></i> 
     </button>
-    <button class="btn btn-danger btn-delete btn-sm btn-group" title="Delete">
+    <button class="btn btn-danger btn-delete btn-sm btn-group deleteorder" data-bs-id="{{$order->id}}">
         <i class="fas fa-trash-alt"></i> 
     </button>
-</td>
 
            	
            </tr>
@@ -79,4 +81,81 @@
 </div>
 </div>
 </div>
+</div>
+</section>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+   $(document).ready(function(){
+    
+    $(".details").on("click", function(){            
+        var orderId = $(this).data('bs-id');
+        getOrderDetails(orderId)
+        
+    });
+    function getOrderDetails(orderId)
+    {
+        $.ajax({
+            url: '/order/getDeails/' + orderId,
+            method: 'GET',
+            success: function(data) {
+                $('#orderModal .modal-body').html("");
+                $('#orderModal .modal-body').html(data);
+                $('#orderModal').modal('show');
+            }
+        });
+    }
+    $(document).on("click",".deleteproduct",function(){
+        var orderId = $(this).data('bs-oid');
+        var productID=$(this).data('bs-id');
+           $.ajax({
+            url: '/order/delproduct',
+            method: 'GET',
+            data:{order:orderId,product:productID},
+            success: function(data) {
+          
+                if(data=="done")
+                {
+                $('#orderModal').modal('toggle');
+                getOrderDetails(orderId)
+                }
+                
+            }
+        });
+        });   
+         $(document).on("click",".deleteorder",function(){
+        var orderId = $(this).data('bs-id');
+           $.ajax({
+            url: '/order/delorder',
+            method: 'GET',
+            data:{id:orderId},
+            success: function(data) {
+                console.log(data);
+                if(data=="done")
+                {
+                location.reload();
+                }
+                
+            }
+        });
+        });
+});
+</script>
+
 @endsection

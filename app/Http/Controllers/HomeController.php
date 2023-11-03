@@ -32,7 +32,6 @@ class HomeController extends Controller
         $productcount = Product::count();
         $user = User::count();
         $order = Order::count();
-       
 
         $customerdata = Customer::orderBy('created_at','desc')->latest()->take(8)->get();
         
@@ -44,17 +43,8 @@ class HomeController extends Controller
         
         $product = Product::orderBy('created_at','desc')->latest()->take(4)->get();
 
-
-        return view('frontend.home', [
-            'order' => $order,
-            'customer' => $customer,
-            'productcount' => $productcount,
-            'product' => $product,
-            'user' => $user,
-            'customerdata' => $customerdata,
-            'latestCustomers' => $latestCustomers,
-        ]);
-        
+       
+        return view('frontend.home')->with('order',$order)->with('customer',$customer)->with('productcount',$productcount)->with('product',$product)->with('user',$user)->with('customerdata',$customerdata)->with('latestCustomers',$latestCustomers);
     }
     public function profile()
     {
