@@ -34,7 +34,7 @@
                         <div class="card-body bg-secondary">
                         <div class="row">
     <div class="col-md-6">
-        <b class="badge badge-primary badge-lg rounded-pill">Date: {{$date}}</b>
+        <b class="badge badge-primary badge-lg rounded-pill">Date: {{ \Carbon\Carbon::now()->setTimezone('Asia/Karachi')->format('m/d/Y | h:i:s A') }}</b>
     </div>
     <div class="col-md-6 text-right">
         <b class="badge badge-primary badge-lg rounded-pill" value="{{$random_no}}" id="codeget">No: {{$random_no}}</b>
@@ -173,17 +173,18 @@
 
 </div>
 </div>
-            <div class="offset-9 col-md-3">
-                <div class="bg-light float-left">
-                    <h5 id="grosstotal">Gross Total: </h5>
-                    <h5 id="customerdisc">Discount: </h5>
-                    <h4 id="grandtotal">Grand Total: </h4>
-                </div>
-               
+<div class="offset-8 col-md-4">
+    <div class="bg-light float-left rounded p-3 shadow-sm">
+        <h5 id="grosstotal" class=" mb-3">Gross Total: </h5>
+        <h5 id="customerdisc" class="mb-3">Discount: </h5>
+        <h4 id="grandtotal" class="">Grand Total: </h4>
+    </div>
+</div>
+
             </div>
             <div class="offset-9 col-md-3">
-                 <div class="my-3">
-                    <button class="btn btn-primary" id="submitbtn">Submit</button>
+                 <div class="my-3 ">
+                    <button class="btn btn-primary btn-block" id="submitbtn">Submit</button>
                  
                 </div>
             </div>
@@ -532,7 +533,8 @@ function calculateGrossTotal() {
 
     var discountAmount = (grossTotal * discountValue) / 100;
     var grandTotal = grossTotal - discountAmount;
-    $("#grandtotal").text("Grand Total:"+grandTotal+"/-");
+    $("#grandtotal").text("Grand Total: " + grandTotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "/-");
+    
 }
 
 $(document).on("click","#submitbtn",function(){

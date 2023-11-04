@@ -6,8 +6,12 @@
 @endpush
 <style>
   /* Add this CSS in your stylesheet or in a <style> tag in the HTML file */
-.payment-image {
+  .payment-image {
     width: 60px; /* Adjust the width as needed */
+    height: auto; /* Auto height to maintain aspect ratio */
+}
+.icon-image {
+    width: 210px; /* Adjust the width as needed */
     height: auto; /* Auto height to maintain aspect ratio */
 }
 </style>
@@ -77,9 +81,9 @@
                     <thead>
                     <tr>
                     <th>Sno</th>
+                    <th>Detail</th>
             <th>Qty</th>
-            <th>Product</th>
-            <th>Category</th>
+           
             <th>Discount</th>
             <th>Subtotal</th>
                     </tr>
@@ -88,9 +92,10 @@
                     @foreach($prods as $index=>$pro)
           <tr>
             <td>{{$index+1}}</td>
+            <td>{{$pro->Name}} - ({{$pro->category->Name}})</td>
+           
             <td>{{$pro->pivot->quantity}}</td>
-            <td>{{$pro->Name}}</td>
-            <td>{{$pro->category->Name}}</td>
+           
             <td>{{$pro->pivot->discount?$pro->pivot->discount."%":"null"}}</td>
             <td>{{$pro->pivot->total}}</td>
           </tr>
@@ -104,16 +109,14 @@
 <div class="row">
                 <!-- accepted payments column -->
                 <div class="col-6">
-                  <p class="lead">Payment Methods:</p>
-                  <img src="{{ asset('frontend/dist/img/credit/jazzcash.png') }}" alt="Easypaisa" class="payment-image">
-    <img src="{{ asset('frontend/dist/img/credit/easypaisa.png') }}" alt="Mastercard" class="payment-image">
-   
-
+    <p class="lead">Accepted Payment Methods:</p>
+    <img src="{{ asset('frontend/dist/img/credit/download-removebg-preview.png') }}" alt="EasyPaisa & JazzCash" class="icon-image">
     <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-        We accept the following payment methods to make your shopping experience seamless and secure:
-        Visa, Mastercard, American Express, and PayPal. Your payment security is our priority.
+        We offer two convenient payment methods to make your online payment experience secure and hassle-free: <b> EasyPaisa &amp; JazzCash</b>
+        <br>Your payment security is our top priority.
     </p>
-                </div>
+</div>
+
                 <!-- /.col -->
                 <div class="col-6">
                   <p class="lead">Amount Due:  <b> {{$order->created_at->format('m/d/Y')}}</b></p>

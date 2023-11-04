@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Order_Product;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -40,11 +41,19 @@ class HomeController extends Controller
         
         $latestCustomers = Customer::whereDate('created_at', $currentDate)->count();
         
-        
+        $orderdata = Order_Product::orderBy('created_at','desc')->latest()->take(5)->get();
         $product = Product::orderBy('created_at','desc')->latest()->take(4)->get();
 
        
-        return view('frontend.home')->with('order',$order)->with('customer',$customer)->with('productcount',$productcount)->with('product',$product)->with('user',$user)->with('customerdata',$customerdata)->with('latestCustomers',$latestCustomers);
+        return view('frontend.home')
+        ->with('order',$order)
+        ->with('customer',$customer)
+        ->with('productcount',$productcount)
+        ->with('product',$product)
+        ->with('user',$user)
+        ->with('customerdata',$customerdata)
+        ->with('orderdata',$orderdata)
+        ->with('latestCustomers',$latestCustomers);
     }
     public function profile()
     {
