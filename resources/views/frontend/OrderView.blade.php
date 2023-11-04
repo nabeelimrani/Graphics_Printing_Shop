@@ -92,7 +92,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn btn-primary btn-close" data-dismiss="modal" aria-label="Cancel">
+    <i class="fas fa-times"></i>
+</button>
+
+
             </div>
             <div class="modal-body">
                
@@ -100,7 +104,11 @@
         </div>
     </div>
 </div>
+<!-- Include jQuery before Bootstrap JavaScript -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
 <script type="text/javascript">
    $(document).ready(function(){
     
