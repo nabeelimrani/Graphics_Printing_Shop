@@ -87,9 +87,12 @@
             <th class="text-center">Rate</th>
            
             <th class="text-center">Discount</th>
-            <th class="text-center">Subtotal</th>
+            <th class="text-center">Total</th>
                     </tr>
                     </thead>
+                    @php
+    $grossTotal = 0;
+    @endphp
                     <tbody>
                     @foreach($prods as $index=>$pro)
           <tr>
@@ -103,7 +106,9 @@
             <td class="text-center">{{$pro->pivot->discount?$pro->pivot->discount."%":"-----"}}</td>
             <td class="text-center">{{ number_format($pro->pivot->total, 0, '.', ',') }}</td>
             
-
+            @php
+            $grossTotal += $pro->pivot->total;
+            @endphp
           </tr>
           @endforeach
 
@@ -125,16 +130,22 @@
 
                 <!-- /.col -->
                 <div class="col-6">
-                  <p class="lead">Amount Due:  <b> {{$order->created_at->format('m/d/Y')}}</b></p>
+                  <br>
+                  <br>
+                  <br>
 
                   <div class="table-responsive">
                     <table class="table">
+                    <tr>
+                      <th>Gross Total</th>
+              <td>{{$grossTotal}}/-</td>
+                      </tr>
                       <tr>
                       <th>Discount</th>
               <td>{{$order->discount}}%</td>
                       </tr>
                       <tr>
-                      <th>Total:</th>
+                      <th>Grand Total:</th>
                       <td>{{ number_format($order->Bill, 2, '.', ',') }} /-</td>
 
                       </tr>

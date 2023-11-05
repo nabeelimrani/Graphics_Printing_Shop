@@ -568,7 +568,7 @@ $('#newtd tr').each(function() {
     var discountValue = parseInt(discountText.match(/\d+/)[0]); 
 
     var grandtotal=$("#grandtotal").text();
-    var gtotal=parseInt(grandtotal.match(/\d+/)[0]);
+    var gtotal=parseFloat(grandtotal.replace(/[^0-9.]/g, ''));
 
     var req={
         

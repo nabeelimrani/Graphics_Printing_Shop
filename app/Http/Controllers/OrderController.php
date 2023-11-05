@@ -111,10 +111,12 @@ data-bs-id={$pro->id}
     </button>
     </td>
 </tr>
+
         ";
       }
-      $str.="</tbody>
-      </table>";
+     
+      $str .= "</tbody></table><p class='text-light rounded-pill p-2 bg-secondary float-right'>Grand Total: {$order->Bill}/-</p>";
+
 
        return response()->json($str);
       
