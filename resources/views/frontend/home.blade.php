@@ -257,19 +257,19 @@
                     <tr>
                       <th>Order ID</th>
                       <th>Item</th>
-                      <th>Status</th>
-                      <th>Popularity</th>
+                      <th>Quantity</th>
+                      <th>Total</th>
                     </tr>
                     </thead>
                     <tbody>
                    
-                    @foreach($orderdata as $index=>$pro)
+                    @foreach($orderdata as $order)
                     <tr>
-                      <td>{{$pro->id}}</td>
-                      <td>{{$pro->name}}</td>
-                      <td><span class="badge badge-danger">Delivered</span></td>
-                      <td>
-                        <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
+                      <td class="text-center">{{$order->id}}</td>
+                      <td class="text-center">{{$order->product->Name}}</td>
+                      <td class="text-center"><span class="badge badge-danger">{{$order->quantity}}</span></td>
+                      <td class="text-center">
+                        <div class="sparkbar" data-color="#f56954" data-height="20">{{$order->total}}</div>
                       </td>
                     </tr>
                    @endforeach

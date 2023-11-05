@@ -11,12 +11,14 @@ class Order_Product extends Model
     protected $table = 'order_product';
     protected $primaryKey = 'id';
 
-    public function customer()
+    public function product()
     {
-       return $this->belongsTo("App\Models\Customer");
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
-    public function products()
+    public function order()
     {
-        return $this->belongsToMany("App\Models\Product")->withPivot("name","quantity","total","purchase","sqrFt","discount");
-    }   
+        return $this->belongsTo(Order::class, 'order_id', 'id');
+    }
+   
+  
 }
