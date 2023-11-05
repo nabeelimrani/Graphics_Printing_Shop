@@ -68,7 +68,7 @@ return "done";
                 <th class='text-center'>Name</th>
                 <th class='text-center'>Quantity</th>
                 <th class='text-center'>SqrFt</th>
-                <th class='text-center'>discount</th>
+                <th class='text-center'>Discount</th>
                 <th class='text-center'>Total</th>
                
                 <th class='text-center'>Action</th>
@@ -85,7 +85,10 @@ return "done";
         $sqrFt=null;
         if($pro->pivot->sqrFt)
         {
-            $sqrFt=$pro->pivot->sqrFt."sqrFt";
+            $sqrFt=$pro->pivot->sqrFt."/Sqft";
+        }
+        else{
+            $sqrFt="---";
         }
        
         if($pro->pivot->discount)
@@ -94,13 +97,13 @@ return "done";
           {  $dis="---";}
       
         $str.="<tr>
-    <td>{$i}</td>
-    <td>{$pro->Name}</td>
-    <td>{$pro->pivot->quantity}</td>
-    <td>{$sqrFt}</td>
-    <td>{$dis}</td>
-    <td>{$pro->pivot->total}/-</td>
-    <td>
+    <td class='text-center'>{$i}</td>
+    <td class='text-center'>{$pro->Name}</td>
+    <td class='text-center'>{$pro->pivot->quantity}</td>
+    <td class='text-center'>{$sqrFt}</td>
+    <td class='text-center'>{$dis}</td>
+    <td class='text-center'>{$pro->pivot->total}/-</td>
+    <td class='text-center'>
  <button class='btn btn-danger btn-delete btn-sm btn-group deleteproduct' data-bs-oid={$order->id}
 data-bs-id={$pro->id}
   >

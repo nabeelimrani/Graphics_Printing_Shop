@@ -80,24 +80,30 @@
                   <table class="table table-striped">
                     <thead>
                     <tr>
-                    <th>Sno</th>
-                    <th>Detail</th>
-            <th>Qty</th>
+                    <th class="text-center">Sno</th>
+                    <th class="text-center">Detail</th>
+            <th class="text-center">Qty</th>
+            <th class="text-center">SqrFt</th>
+            <th class="text-center">Rate</th>
            
-            <th>Discount</th>
-            <th>Subtotal</th>
+            <th class="text-center">Discount</th>
+            <th class="text-center">Subtotal</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($prods as $index=>$pro)
           <tr>
-            <td>{{$index+1}}</td>
-            <td>{{$pro->Name}} - ({{$pro->category->Name}})</td>
+            <td class="text-center">{{$index+1}}</td>
+            <td class="text-center">{{$pro->Name}} - ({{$pro->category->Name}})</td>
            
-            <td>{{$pro->pivot->quantity}}</td>
+            <td class="text-center">{{$pro->pivot->quantity}}</td>
+            <td class="text-center">{{$pro->pivot->sqrFt?$pro->pivot->sqrFt:"-----"}}</td>
+            <td class="text-center">{{$pro->pivot->purchase}}</td>
            
-            <td>{{$pro->pivot->discount?$pro->pivot->discount."%":"null"}}</td>
-            <td>{{$pro->pivot->total}}</td>
+            <td class="text-center">{{$pro->pivot->discount?$pro->pivot->discount."%":"-----"}}</td>
+            <td class="text-center">{{ number_format($pro->pivot->total, 0, '.', ',') }}</td>
+            
+
           </tr>
           @endforeach
 
@@ -129,7 +135,8 @@
                       </tr>
                       <tr>
                       <th>Total:</th>
-              <td>{{$order->Bill}}/-</td>
+                      <td>{{ number_format($order->Bill, 2, '.', ',') }} /-</td>
+
                       </tr>
                      
                      
@@ -141,12 +148,17 @@
               <!-- /.row -->
               <div class="row no-print">
                 <div class="col-12">
-                <a href="javascript:window.print();">
 
+                <a href="javascript:window.print();">
                 <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
                 <i class="fas fa-print"></i> Print
-</button>
-</a>
+              </button>
+            </a>
+            <a href="{{route('orderView')}}">
+                <button type="button" class="btn btn-danger float-right" style="margin-right: 5px;">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+            </a>
                 </div>
               </div>
             </div>

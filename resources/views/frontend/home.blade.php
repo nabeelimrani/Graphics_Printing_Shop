@@ -255,10 +255,10 @@
                   <table class="table m-0">
                     <thead>
                     <tr>
-                      <th>Order ID</th>
-                      <th>Item</th>
-                      <th>Quantity</th>
-                      <th>Total</th>
+                      <th class="text-center">Order ID</th>
+                      <th class="text-center">Item</th>
+                      <th class="text-center">Quantity</th>
+                      <th class="text-center">Total</th>
                     </tr>
                     </thead>
                     <tbody>
