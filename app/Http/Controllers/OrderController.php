@@ -70,9 +70,6 @@ return "done";
                 <th class='text-center'>SqrFt</th>
                 <th class='text-center'>Discount</th>
                 <th class='text-center'>Total</th>
-               
-                <th class='text-center'>Action</th>
-               
             </tr>
         </thead>
         <tbody>";
@@ -103,13 +100,7 @@ return "done";
     <td class='text-center'>{$sqrFt}</td>
     <td class='text-center'>{$dis}</td>
     <td class='text-center'>{$pro->pivot->total}/-</td>
-    <td class='text-center'>
- <button class='btn btn-danger btn-delete btn-sm btn-group deleteproduct' data-bs-oid={$order->id}
-data-bs-id={$pro->id}
-  >
-        <i class='fas fa-trash-alt'></i> 
-    </button>
-    </td>
+   
 </tr>
 
         ";
@@ -145,15 +136,22 @@ data-bs-id={$pro->id}
         $sqrFt=null;
         if($x["sqrFt"]!=null)
         {
-            $sqrFt=$product->SqrFt;
-            $sqrFt=$sqrFt-$x["sqrFt"];
-            $product->update(["sqrFt"=>$sqrFt]);
+            $actualtotal=$product->Total;
+            $minussqrFt=$actualtotal-$x["sqrFt"];
+            $product->update(["Total"=>$minussqrFt]);
             $sqrFt=$x["sqrFt"];
         }
 
+        
+        if($x["quantity"]!=null)
+    {
+
+    
         $qty=$product->Quantity;
         $newQty=$qty-$x["quantity"];
         $product->update(["Quantity"=>$newQty]);
+        
+    }
 
 
                 $or->products()->attach($pid,[

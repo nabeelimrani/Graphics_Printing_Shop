@@ -35,7 +35,7 @@ public function checkSqrft(Request $request)
     
     $product = Product::where("Name", $name)->first();
     
-    $availableQty = $product->SqrFt;
+    $availableQty = $product->Total;
     
     if ($availableQty < $qty) {
         return 1;

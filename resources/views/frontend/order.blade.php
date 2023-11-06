@@ -305,7 +305,7 @@
                 });
             }
         });
-           $("#quantityInput").on("change",function()
+           $("#quantityInput").on("input",function()
         {
             var name=$("#showproduct").text();
             var val=$(this).val();
@@ -325,7 +325,7 @@
             }
             });
         });
-         $("#avasqrft").on("change",function()
+         $("#avasqrft").on("input",function()
         {
             var name=$("#showproduct").text();
             var val=$(this).val();
@@ -342,6 +342,27 @@
                     if(data==0)
                     $("#saveRow").prop('disabled', false);
 
+                   
+
+                    var withtextrate = $("#showitemprice").text();
+
+                    var rate = parseFloat(withtextrate.match(/\d+/));
+                    var dics = $("#showitemdisc").text();
+
+                    var discount = parseFloat(dics.match(/\d+/));
+
+                    var totalprice = val * rate;
+                    
+                    
+                    if (discount > 0) {
+                                var totalwithdisc = (totalprice * discount) / 100;
+                                var actualtotal = totalprice - totalwithdisc;
+                                var formattedTotal = actualtotal.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,') + "/-";
+                                $("#totalSpan").text(formattedTotal);
+                            } else {
+                                $("#totalSpan").text(totalprice.toFixed(2) + "/-");
+                            }
+                    
             }
             });
         });
@@ -382,12 +403,13 @@
                             showItemDiscElement.text(data.Disc + ".00%");
                         }
 
-                        if (!data.SqrFt) {
+                        if (!data.Total) {
                             $("#sqftSpan").val("---");
                         }
                         else
                         {
-                            $("#sqftSpan").val(data.SqrFt);
+                            $("#quantityInput").prop('disabled', true);
+                            $("#sqftSpan").val(data.Total);
                         }
 
                         quantityInput.on('input', function () {

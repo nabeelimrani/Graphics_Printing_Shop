@@ -99,7 +99,7 @@
             <td class="text-center">{{$index+1}}</td>
             <td class="text-center">{{$pro->Name}} - ({{$pro->category->Name}})</td>
            
-            <td class="text-center">{{$pro->pivot->quantity}}</td>
+            <td class="text-center">{{$pro->pivot->quantity?$pro->pivot->quantity:"--------"}}</td>
             <td class="text-center">{{$pro->pivot->sqrFt?$pro->pivot->sqrFt:"-----"}}</td>
             <td class="text-center">{{$pro->pivot->purchase}}</td>
            
@@ -136,10 +136,12 @@
 
                   <div class="table-responsive">
                     <table class="table">
+                    @if($customer->Opening_Bal)
                     <tr>
-                      <th>Gross Total</th>
-              <td>{{$grossTotal}}/-</td>
+                      <th>Previous Balance : </th>
+              <td>{{$customer->Opening_Bal}}/-</td>
                       </tr>
+                      @endif
                        <tr>
                       <th>Gross Total</th>
               <td>{{$grossTotal}}/-</td>
@@ -149,10 +151,17 @@
               <td>{{$order->discount}}%</td>
                       </tr>
                       <tr>
-                      <th>Grand Total:</th>
-                      <td>{{ number_format($order->Bill, 2, '.', ',') }} /-</td>
+    <th>Grand Total:</th>
+    @if($customer->Opening_Bal)
+        @php
+        $total = $customer->Opening_Bal + $order->Bill;
+        @endphp
+        <td>{{ number_format($total, 2, '.', ',') }} /-</td>
+    @else
+        <td>{{ number_format($order->Bill, 2, '.', ',') }} /-</td>
+    @endif
+</tr>
 
-                      </tr>
                      
                      
                     </table>

@@ -65,9 +65,7 @@
              <button class="btn btn-info btn-sm btn-group details" data-bs-id="{{$order->id}}" >
         <i class="fas fa-info-circle"></i> 
     </button>
-    <button class="btn btn-danger btn-delete btn-sm btn-group deleteorder" data-bs-id="{{$order->id}}">
-        <i class="fas fa-trash-alt"></i> 
-    </button>
+    
 
            	
            </tr>
@@ -129,40 +127,7 @@
             }
         });
     }
-    $(document).on("click",".deleteproduct",function(){
-        var orderId = $(this).data('bs-oid');
-        var productID=$(this).data('bs-id');
-           $.ajax({
-            url: '/order/delproduct',
-            method: 'GET',
-            data:{order:orderId,product:productID},
-            success: function(data) {
-          
-                if(data=="done")
-                {
-                $('#orderModal').modal('toggle');
-                getOrderDetails(orderId)
-                }
-                
-            }
-        });
-        });   
-         $(document).on("click",".deleteorder",function(){
-        var orderId = $(this).data('bs-id');
-           $.ajax({
-            url: '/order/delorder',
-            method: 'GET',
-            data:{id:orderId},
-            success: function(data) {
-                console.log(data);
-                if(data=="done")
-                {
-                location.reload();
-                }
-                
-            }
-        });
-        });
+   
 });
 </script>
 
