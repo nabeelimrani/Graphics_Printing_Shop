@@ -210,14 +210,14 @@
                   @foreach($product as $productdata)
                   <li class="item">
                     <div class="product-img">
-                      <img src="{{asset('frontend/dist/img/default-150x150.png')}}" alt="Product Image" class="img-size-50">
+                      <img src="{{asset('frontend/dist/img/images.jpg')}}" alt="Product Image" class="img-size-50">
                     </div>
                     <div class="product-info">
                       <a href="javascript:void(0)" class="product-title">{{$productdata->Name}}
                         <span class="badge badge-warning float-right">PKR-{{$productdata->Rate}}/-</span></a>
                       <span class="product-description">
-                       <strong>Discount: {{$productdata->Disc}}%</strong> &nbsp;|&nbsp;
-                       <strong>Size: {{$productdata->SqrFt}}cm</strong>    </span>
+                      <strong>{{$productdata->Disc ? 'Discount: ' . $productdata->Disc . '%' : ''}}</strong>{{$productdata->Disc ? ' | ' : ''}}
+                       <strong>{{$productdata->SqrFt ? 'Size: ' . $productdata->SqrFt . 'cm' : ''}}</strong>    </span>
                     </div>
                   </li>
                   <!-- /.item -->
@@ -243,10 +243,7 @@
                   <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+                                 </div>
               </div>
               
               <!-- /.card-header -->
@@ -266,7 +263,9 @@
                     @foreach($orderdata as $order)
                     <tr>
                       <td class="text-center">{{$order->id}}</td>
-                      <td class="text-center">{{$order->product->Name}}</td>
+
+                      <td class="text-center">{{ $order->product->Name ? $order->product->Name : ' ' }}</td>
+
                       <td class="text-center"><span class="badge badge-danger">{{$order->quantity}}</span></td>
                       <td class="text-center">
                         <div class="sparkbar" data-color="#f56954" data-height="20">{{$order->total}}</div>

@@ -104,7 +104,7 @@
             <td class="text-center">{{$pro->pivot->purchase}}</td>
            
             <td class="text-center">{{$pro->pivot->discount?$pro->pivot->discount."%":"-----"}}</td>
-            <td class="text-center">{{ number_format($pro->pivot->total, 0, '.', ',') }}</td>
+            <td class="text-center">{{ $pro->pivot->total }}</td>
             
             @php
             $grossTotal += $pro->pivot->total;
@@ -137,6 +137,10 @@
                   <div class="table-responsive">
                     <table class="table">
                     <tr>
+                      <th>Gross Total</th>
+              <td>{{$grossTotal}}/-</td>
+                      </tr>
+                       <tr>
                       <th>Gross Total</th>
               <td>{{$grossTotal}}/-</td>
                       </tr>

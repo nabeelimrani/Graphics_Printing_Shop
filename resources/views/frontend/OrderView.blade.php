@@ -42,7 +42,7 @@
         <thead >
             <tr  >
                 <th class="text-center" >Code</th>
-                <th class="text-center">Customer</th>
+                <th class="text-center">Customers</th>
                 <th class="text-center">Discount</th>
                
                 <th class="text-center">Action</th>
@@ -61,7 +61,7 @@
            	<td class="text-center">
            		{{$order->discount}}%
            	</td>
-             <td >
+             <td class="text-center">
              <button class="btn btn-info btn-sm btn-group details" data-bs-id="{{$order->id}}" >
         <i class="fas fa-info-circle"></i> 
     </button>
@@ -90,9 +90,9 @@
 <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-primary">
                 <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
-                <button type="button" class="btn btn-primary btn-close" data-dismiss="modal" aria-label="Cancel">
+                <button type="button" class="btn btn-dark btn-close" data-dismiss="modal" aria-label="Cancel">
     <i class="fas fa-times"></i>
 </button>
 

@@ -116,12 +116,12 @@
               </li>
               <li class="nav-item">
                 <a href="{{ route('product') }}" class="nav-link {{Request::is('product*') ? 'active' : ' ' }}">
-                  <p>Create Product</p>
+                  <p>Purchase Product</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{ route('order') }}" class="nav-link {{Request::is('order*') ? 'active' : ' ' }}">
-                  <p>Create Order</p>
+                  <p>Sale Product</p>
                 </a>
               </li>
               <li class="nav-item">

@@ -64,7 +64,7 @@ return "done";
             <table class='table table-sm table-striped text-dark table-bordered'>
         <thead >
             <tr  >
-                <th class='text-center' >sno</th>
+                <th class='text-center' >Sno</th>
                 <th class='text-center'>Name</th>
                 <th class='text-center'>Quantity</th>
                 <th class='text-center'>SqrFt</th>
@@ -85,7 +85,7 @@ return "done";
         $sqrFt=null;
         if($pro->pivot->sqrFt)
         {
-            $sqrFt=$pro->pivot->sqrFt."/Sqft";
+            $sqrFt=$pro->pivot->sqrFt." ";
         }
         else{
             $sqrFt="---";
@@ -114,8 +114,14 @@ data-bs-id={$pro->id}
 
         ";
       }
-     
-      $str .= "</tbody></table><p class='text-light rounded-pill p-2 bg-secondary float-right'>Grand Total: {$order->Bill}/-</p>";
+      $str .= "</tbody></table>
+      <p class='text-light rounded-pill p-2 bg-primary float-right'>Grand Total: " . number_format($order->Bill, 0, '.', ',') . "/-</p>";
+     if($order->discount)
+     {
+        $str .="<p class='text-light rounded-pill p-2 bg-primary float-left'>Customer Discount: " . $order->discount . '%' . "</p>";
+     }
+      
+
 
 
        return response()->json($str);
@@ -128,6 +134,7 @@ data-bs-id={$pro->id}
         $cid=$request->cid;
         $gtotal=$request->grandTotal;
         $discount=$request->discount;
+
         $or=Order::Create(["customer_id"=>$cid,"discount"=>$discount,"Bill"=>$gtotal]);
     
         foreach($xs as $x)

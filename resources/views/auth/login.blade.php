@@ -6,7 +6,7 @@
         <div class="col-md-5">
         <div class="login-logo">
           
-    <a href="{{url('/login')}}"><b>HN </b> Wedding Shop</a>
+    <a href="{{url('/login')}}"><b>Hassan </b> Graphics &amp; Printing</a>
     <img src="{{ asset('icon/wedding.png') }}" width=50>
   </div>
             <div class="card" style="background: rgba(255, 255, 255, 0.3);">
