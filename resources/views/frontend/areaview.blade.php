@@ -2,7 +2,7 @@
 
 @section('main-section')
 @push('title')
-<title>View Area - Hassan Graphics & Printing</title>
+<title>View Area  Hassan Graphics & Printing</title>
 @endpush
 <div class="content-wrapper">
     <section class="content-header">
