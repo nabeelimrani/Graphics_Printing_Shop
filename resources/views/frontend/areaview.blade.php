@@ -2,7 +2,7 @@
 
 @section('main-section')
 @push('title')
-<title>View Area - Hassan Graphics & Printing</title>
+<title>View Area  Hassan Graphics & Printing</title>
 @endpush
 <div class="content-wrapper">
     <section class="content-header">
@@ -18,7 +18,6 @@
                             <li class="breadcrumb-item active"><a href="{{ route('areaview') }}">Area</a></li>
                         </ol>
                         <a href="{{ route('area') }}" class="btn btn-info">Add Area</a>
-                    </div>
                 </div>
             </div>
         </div>
