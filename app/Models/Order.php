@@ -9,6 +9,7 @@ class Order extends Model
 {
     protected $guarded=[];
     use HasFactory;
+
     public function customer()
     {
        return $this->belongsTo("App\Models\Customer");
@@ -16,5 +17,7 @@ class Order extends Model
     public function products()
     {
         return $this->belongsToMany("App\Models\Product")->withPivot("quantity","total","purchase","sqrFt","discount");
-    }   
+    }
+
+
 }
