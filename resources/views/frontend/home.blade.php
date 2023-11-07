@@ -276,7 +276,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             @foreach ($orderdata as $order)
                                                 <tr>
                                                     <td class="text-center">{{ $order->id }}</td>
