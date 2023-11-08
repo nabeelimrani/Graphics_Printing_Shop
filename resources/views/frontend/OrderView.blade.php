@@ -4,6 +4,8 @@
     @push('title')
         <title>Order View - Hassan Graphics & Printing</title>
     @endpush
+
+
     <div class="content-wrapper">
         <section class="content-header">
             <div class="container-fluid">
@@ -15,7 +17,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                                <li class="breadcrumb-item active"><a href="{{ route('order') }}">Order</a></li>
+                                <li class="breadcrumb-item active"><a href="{{ route('orderView') }}">Order</a></li>
                             </ol>
 
                         </div>
@@ -23,7 +25,17 @@
                 </div>
             </div>
         </section>
+        @if (session('success'))
+            <div class="alert alert-success" id="alert">
+                {{ session('success') }}
+            </div>
+        @endif
 
+        @if (session('error'))
+            <div class="alert alert-danger" id="alert">
+                {{ session('error') }}
+            </div>
+        @endif
         <section>
             <div class="container-fluid ">
                 <div class="row ">
@@ -32,12 +44,13 @@
                             <div class="card-header">
                                 <h3 class="card-title text-dark" id="msg">Orders</h3>
                                 <div class="card-tools">
-                                    <form action="{{ route('categoryview') }}">
+                                    <form action="{{ route('orderView') }}">
                                         @csrf
                                         <div class="input-group input-group-sm" style="width: 150px;">
                                             <input type="date" name="categorysearch"
                                                 class="form-control float-right datepicker" placeholder="Search"
-                                                data-provide="datepicker">
+                                                data-provide="datepicker"
+                                                value="@if ($search) {{ $search }} @endif">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-default">
                                                     <i class="fas fa-search"></i>
@@ -79,21 +92,23 @@
                                                         {{ $order->discount }}%
                                                     </td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-info btn-sm btn-group details"
-                                                            data-bs-id="{{ $order->id }}">
-                                                            <i class="fas fa-info-circle"></i>
-                                                        </button>
-                                                        <form class="btn btn-info btn-sm btn-group"
-                                                            action="{{ route('invoicepay') }}" method="POST">
-                                                            @csrf
-                                                            <input type="hidden" value="{{ $order->id }}"
-                                                                name="orderid">
-                                                            <button class="btn btn-info btn-sm btn-group" type="submit"
+                                                        <div class="btn-group">
+                                                            <button class="btn btn-sm btn-outline-primary details"
                                                                 data-bs-id="{{ $order->id }}">
-                                                                <i class="fas fa-file-invoice"></i>
+                                                                <i class="fas fa-info-circle"></i>
                                                             </button>
-                                                        </form>
+                                                            <form action="{{ route('invoicepay') }}" method="POST">
+                                                                @csrf
+                                                                <input type="hidden" value="{{ $order->id }}"
+                                                                    name="orderid">
+                                                                <button class="btn btn-sm btn-outline-success"
+                                                                    type="submit" data-bs-id="{{ $order->id }}">
+                                                                    <i class="fas fa-file-invoice"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </td>
+
 
 
 
@@ -142,6 +157,16 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+
+            setTimeout(function() {
+                $("#alert").animate({
+                    opacity: 0,
+                    height: 0,
+                    padding: 0
+                }, 1000, function() {
+                    $(this).hide();
+                });
+            }, 1000);
 
             $(".details").on("click", function() {
                 var orderId = $(this).data('bs-id');

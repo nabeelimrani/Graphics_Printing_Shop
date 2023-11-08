@@ -76,7 +76,7 @@ return "done";
         <tbody>";
         if($customer->Opening_Bal)
         {
-           $str .="<p class='text-light rounded-pill p-2 bg-primary float-right'>Previous Balance: " . $customer->Opening_Bal . '%' . "</p>";
+           $str .="<p class='text-light rounded-pill p-2 bg-primary float-right'>Previous Balance: " . $customer->Opening_Bal . '/-' . "</p>";
         }
       foreach($order->products as $index=>$pro)
       {
@@ -194,11 +194,36 @@ return "done";
         ->with('customer',$customer)
         ->with('product',$product);
     }
-    public function orderView()
-    {
-        $orders = Order::latest()->take(4)->paginate(4);
+    public function orderView(Request $request)
 
-        return view("frontend.OrderView")
-        ->with("orders",$orders);
+    {
+        $search = $request->categorysearch;
+        if($search)
+        {
+
+            $orders = Order::where('created_at','LIKE',"%$search%")->paginate(4);
+
+            if($orders)
+            {
+
+
+            return view('frontend.OrderView')->with('orders',$orders)->with('search',$search);
+            }
+            else
+            {
+             return view('frontend.OrderView')->with('orders',$orders)->with('search',$search)->with('error', 'Order not found');
+
+            }
+        }
+        else
+        {
+
+
+      $orders = Order::latest()->paginate(4); // You can specify the number of items per page (e.g., 10).
+
+        return view('frontend.OrderView')->with('orders',$orders)->with('search',$search);
+    }
+
+
     }
 }
