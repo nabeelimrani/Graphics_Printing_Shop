@@ -35,16 +35,16 @@ class HomeController extends Controller
         $order = Order::count();
 
         $customerdata = Customer::orderBy('created_at','desc')->latest()->take(8)->get();
-        
+
         $currentDate = Carbon::now()->toDateString();
 
-        
+
         $latestCustomers = Customer::whereDate('created_at', $currentDate)->count();
-        
+
         $orderdata = Order_Product::orderBy('created_at','desc')->latest()->take(5)->get();
         $product = Product::orderBy('created_at','desc')->latest()->take(4)->get();
 
-       
+
         return view('frontend.home')
         ->with('order',$order)
         ->with('customer',$customer)
@@ -68,9 +68,19 @@ class HomeController extends Controller
             $order = Order::orderBy('id', 'desc')->first();
            $customer=$order->customer;
            $prods=$order->products;
-          
+
 
         return view("frontend.invoice")->with("customer",$customer)->with("order",$order)->with("prods",$prods);
     }
-    
+    public function invoicepay(Request $request)
+    {
+
+            $order = Order::where('id',$request->orderid)->first();
+           $customer=$order->customer;
+           $prods=$order->products;
+
+
+        return view("frontend.invoice")->with("customer",$customer)->with("order",$order)->with("prods",$prods);
+    }
+
 }

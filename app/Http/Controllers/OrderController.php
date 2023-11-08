@@ -51,7 +51,7 @@ $order->products()->detach($proId);
 $product=Product::find($proId);
 if($sqrFt!=null)
 {
- $product->update(["SqrFt"=>$product->SqrFt+$sqrFt]);   
+ $product->update(["SqrFt"=>$product->SqrFt+$sqrFt]);
 }
 $product->update(["Quantity"=>$product->Quantity+$qty]);
 return "done";
@@ -60,6 +60,7 @@ return "done";
     public function getDetails($id)
     {
         $order=Order::find($id);
+        $customer = Customer::where('id',$order->customer_id)->first();
         $str="
             <table class='table table-sm table-striped text-dark table-bordered'>
         <thead >
@@ -73,10 +74,13 @@ return "done";
             </tr>
         </thead>
         <tbody>";
-
+        if($customer->Opening_Bal)
+        {
+           $str .="<p class='text-light rounded-pill p-2 bg-primary float-right'>Previous Balance: " . $customer->Opening_Bal . '%' . "</p>";
+        }
       foreach($order->products as $index=>$pro)
       {
-       
+
         $i=$index+1;
         $dis="";
         $sqrFt=null;
@@ -87,12 +91,12 @@ return "done";
         else{
             $sqrFt="---";
         }
-       
+
         if($pro->pivot->discount)
          {   $dis=$pro->pivot->discount."%";}
         else
           {  $dis="---";}
-      
+
         $str.="<tr>
     <td class='text-center'>{$i}</td>
     <td class='text-center'>{$pro->Name}</td>
@@ -100,7 +104,7 @@ return "done";
     <td class='text-center'>{$sqrFt}</td>
     <td class='text-center'>{$dis}</td>
     <td class='text-center'>{$pro->pivot->total}/-</td>
-   
+
 </tr>
 
         ";
@@ -111,26 +115,27 @@ return "done";
      {
         $str .="<p class='text-light rounded-pill p-2 bg-primary float-left'>Customer Discount: " . $order->discount . '%' . "</p>";
      }
-      
+
+
 
 
 
        return response()->json($str);
-      
+
     }
     public function store(Request $request)
     {
-        
+
         $xs=$request->data;
         $cid=$request->cid;
         $gtotal=$request->grandTotal;
         $discount=$request->discount;
 
         $or=Order::Create(["customer_id"=>$cid,"discount"=>$discount,"Bill"=>$gtotal]);
-    
+
         foreach($xs as $x)
         {
-            
+
         $product=Product::where("Name",$x["itemName"])->first();
         $pid=$product->id;
         $sqrFt=null;
@@ -142,15 +147,15 @@ return "done";
             $sqrFt=$x["sqrFt"];
         }
 
-        
+
         if($x["quantity"]!=null)
     {
 
-    
+
         $qty=$product->Quantity;
         $newQty=$qty-$x["quantity"];
         $product->update(["Quantity"=>$newQty]);
-        
+
     }
 
 
@@ -162,20 +167,20 @@ return "done";
                 "sqrFt"=> $sqrFt,
                 "total"=>$x["total"],
             ]);
-                  
+
         }
           return json_encode(["output"=>"order added"]) ;
     }
     public function order()
     {
 
-        date_default_timezone_set('Asia/Karachi'); 
+        date_default_timezone_set('Asia/Karachi');
         $date = date("Y-m-d h:i A");
 
         $random_no =  str_pad(rand(1, 9999), 5, '0', STR_PAD_LEFT);
 
 
-        
+
         $customer = Customer::all();
         $category = Category::all();
         $categories = Category::orderBy('Name','asc')->get();
@@ -191,7 +196,8 @@ return "done";
     }
     public function orderView()
     {
-        $orders=Order::all();
+        $orders = Order::latest()->take(4)->paginate(4);
+
         return view("frontend.OrderView")
         ->with("orders",$orders);
     }
