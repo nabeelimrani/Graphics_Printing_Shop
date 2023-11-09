@@ -139,13 +139,27 @@ return "done";
         $product=Product::where("Name",$x["itemName"])->first();
         $pid=$product->id;
         $sqrFt=null;
-        if($x["sqrFt"]!=null)
-        {
-            $actualtotal=$product->Total;
-            $minussqrFt=$actualtotal-$x["sqrFt"];
-            $product->update(["Total"=>$minussqrFt]);
-            $sqrFt=$x["sqrFt"];
+        if ($x["sqrFt"] != null) {
+            $sqrFt = $x["sqrFt"];
+            $bagsSold = floor($sqrFt / $product->SqrFt); // Use floor to calculate full bags sold
+            $remainingSquareFeet = $sqrFt % $product->SqrFt; // Calculate remaining square feet
+
+            // Initialize $newQty to the initial quantity
+            $newQty = $product->Quantity;
+
+            if ($sqrFt >= $product->SqrFt) {
+                // Only decrement quantity if the total square footage sold is equal to or greater than square feet per bag
+                $newQty -= $bagsSold;
+            }
+
+            $product->update(["Quantity" => $newQty]);
+
+            $actualTotal = $product->Total;
+            $minusSqrFt = $actualTotal - $sqrFt;
+            $product->update(["Total" => $minusSqrFt]);
         }
+
+
 
 
         if($x["quantity"]!=null)
@@ -225,5 +239,23 @@ return "done";
     }
 
 
+    }
+
+    public function savetax(Request $request)
+    {
+        $orderid = $request->orderid;
+        $tax = $request->printing_taxes;
+
+        // Find the order by its ID
+        $order = Order::find($orderid);
+
+        if ($order) {
+            // Update the Printing_Charges
+            $order->Printing_Charges = $tax;
+            $order->save(); // Save the changes to the database
+        }
+        $orders = Order::latest()->paginate(4);
+        return view('frontend.OrderView')->with('orders',$orders);
+        // You can return a response or redirect to a specific page after the update.
     }
 }

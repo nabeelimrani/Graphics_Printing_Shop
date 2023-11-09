@@ -50,7 +50,7 @@
                                             <input type="date" name="categorysearch"
                                                 class="form-control float-right datepicker" placeholder="Search"
                                                 data-provide="datepicker"
-                                                value="@if ($search) {{ $search }} @endif">
+                                                value="@if (isset($search)) {{ $search }} @endif">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-default">
                                                     <i class="fas fa-search"></i>
@@ -74,7 +74,7 @@
                                                 <th class="text-center">Code</th>
                                                 <th class="text-center">Customers</th>
                                                 <th class="text-center">Discount</th>
-
+                                                <th class="text-center">Printing Charges</th>
                                                 <th class="text-center">Action</th>
 
                                             </tr>
@@ -92,10 +92,13 @@
                                                         {{ $order->discount }}%
                                                     </td>
                                                     <td class="text-center">
+                                                        {{ $order->Printing_Charges }}/-
+                                                    </td>
+                                                    <td class="text-center">
                                                         <div class="btn-group">
                                                             <button class="btn btn-sm btn-outline-primary details"
                                                                 data-bs-id="{{ $order->id }}">
-                                                                <i class="fas fa-info-circle"></i>
+                                                                <i class="fas fa-info-circle"></i>&nbsp;Detail
                                                             </button>
                                                             <form action="{{ route('invoicepay') }}" method="POST">
                                                                 @csrf
@@ -103,7 +106,7 @@
                                                                     name="orderid">
                                                                 <button class="btn btn-sm btn-outline-success"
                                                                     type="submit" data-bs-id="{{ $order->id }}">
-                                                                    <i class="fas fa-file-invoice"></i>
+                                                                    <i class="fas fa-file-invoice"></i>&nbsp;Invoice
                                                                 </button>
                                                             </form>
                                                         </div>

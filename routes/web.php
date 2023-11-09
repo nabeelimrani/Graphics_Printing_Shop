@@ -57,3 +57,6 @@ Route::get('/category/view', [CategoryController::class, 'categoryview'])->name(
 Route::post('/category/submit', [CategoryController::class, 'categorysubmit'])->name('categorysubmit');
 Route::post('/category/del/{id}', [CategoryController::class, 'categorydel'])->name('categorydel');
 Route::post('/category/edit/{id}', [CategoryController::class, 'categoryedit'])->name('categoryedit');
+
+Route::post('/save/tax', [OrderController::class, 'savetax'])->name('savetax');
+
