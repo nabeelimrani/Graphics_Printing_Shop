@@ -141,23 +141,34 @@ return "done";
         $sqrFt=null;
         if ($x["sqrFt"] != null) {
             $sqrFt = $x["sqrFt"];
-            $bagsSold = floor($sqrFt / $product->SqrFt); // Use floor to calculate full bags sold
-            $remainingSquareFeet = $sqrFt % $product->SqrFt; // Calculate remaining square feet
 
-            // Initialize $newQty to the initial quantity
-            $newQty = $product->Quantity;
+            // Calculate how many full bags can be sold and the remaining square feet
+            $bagsSold = floor($sqrFt / $product->SqrFt);
+            $remainingSquareFeet = $sqrFt % $product->SqrFt;
 
-            if ($sqrFt >= $product->SqrFt) {
-                // Only decrement quantity if the total square footage sold is equal to or greater than square feet per bag
-                $newQty -= $bagsSold;
+            // Calculate the new quantity
+            $newQty = $product->Quantity - $bagsSold;
+
+            // If there are remaining square feet after selling full bags
+            if ($remainingSquareFeet > 0) {
+                // Check if the remaining square feet can be accommodated in a new bag
+                if ($remainingSquareFeet <= $product->SqrFt) {
+                    // If yes, decrement quantity by 1
+                    $newQty--;
+                } else {
+                    // If not, no need to decrement quantity
+                }
             }
 
+            // Update the product quantity
             $product->update(["Quantity" => $newQty]);
 
+            // Update the product's total square footage
             $actualTotal = $product->Total;
             $minusSqrFt = $actualTotal - $sqrFt;
             $product->update(["Total" => $minusSqrFt]);
         }
+
 
 
 
