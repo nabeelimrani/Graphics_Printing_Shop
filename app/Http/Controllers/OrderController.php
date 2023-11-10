@@ -140,33 +140,18 @@ return "done";
         $pid=$product->id;
         $sqrFt=null;
         if ($x["sqrFt"] != null) {
-            $sqrFt = $x["sqrFt"];
 
-            // Calculate how many full bags can be sold and the remaining square feet
-            $bagsSold = floor($sqrFt / $product->SqrFt);
-            $remainingSquareFeet = $sqrFt % $product->SqrFt;
+            $salesqrFt = $x["sqrFt"];
+            $totalsqrft = $product->Total;
+            $persqrft = $product->SqrFt;
+            $remainingSquareFeet =  $totalsqrft - $salesqrFt;
 
-            // Calculate the new quantity
-            $newQty = $product->Quantity - $bagsSold;
 
-            // If there are remaining square feet after selling full bags
-            if ($remainingSquareFeet > 0) {
-                // Check if the remaining square feet can be accommodated in a new bag
-                if ($remainingSquareFeet <= $product->SqrFt) {
-                    // If yes, decrement quantity by 1
-                    $newQty--;
-                } else {
-                    // If not, no need to decrement quantity
-                }
-            }
+            $product->update(["Total" => $remainingSquareFeet]);
 
-            // Update the product quantity
-            $product->update(["Quantity" => $newQty]);
-
-            // Update the product's total square footage
-            $actualTotal = $product->Total;
-            $minusSqrFt = $actualTotal - $sqrFt;
-            $product->update(["Total" => $minusSqrFt]);
+            $remainingQuantity =  $remainingSquareFeet /  $persqrft;
+            $roundedQuantity = round($remainingQuantity, 1);
+            $product->update(["Quantity" => $roundedQuantity]);
         }
 
 
@@ -266,7 +251,7 @@ return "done";
             $order->save(); // Save the changes to the database
         }
         $orders = Order::latest()->paginate(4);
-        return view('frontend.OrderView')->with('orders',$orders);
-        // You can return a response or redirect to a specific page after the update.
+        return redirect()->route('orderView')->with('orders',$orders);
+
     }
 }
