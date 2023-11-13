@@ -60,7 +60,7 @@
                         <strong>Hassan Graphics &amp; Printing, Inc.</strong><br>
                         State Life Building, PK 29111<br>
                         Phone 1: (+92) 343-0990514<br>
-                        Phone 2: (+92) 313-9342055<br>
+                        Phone 2: (+92) 313-9342025<br>
                         Email 1: Hassangraphicsdik@gmail.com<br>
                         Email 2: Hassanprintingdik@gmail.com
                     </address>
