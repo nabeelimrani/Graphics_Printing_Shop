@@ -18,7 +18,7 @@ class Product extends Model
     }
      public function orders()
     {
-        return $this->belongsToMany("App\Models\Order")->withPivot("quantity","total","purchase","sqrFt","discount");
-    }  
-    
+        return $this->belongsToMany("App\Models\Order")->withPivot("name","quantity","total","purchase","sqrFt","discount");
+    }
+
 }

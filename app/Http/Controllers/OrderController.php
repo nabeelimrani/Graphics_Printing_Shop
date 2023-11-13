@@ -115,6 +115,10 @@ return "done";
      {
         $str .="<p class='text-light rounded-pill p-2 bg-primary float-left'>Customer Discount: " . $order->discount . '%' . "</p>";
      }
+     if($order->Printing_Charges)
+     {
+        $str .="<p class='text-light rounded-pill p-2 bg-primary float-left'>Printing Charges: " . $order->Printing_Charges . '/-' . "</p>";
+     }
 
 
 
