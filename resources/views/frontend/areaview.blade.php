@@ -66,6 +66,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
                                     @foreach($area as $areadata)
                                     <tr>
                                         <td class="text-center">{{$areadata->id}}</td>
