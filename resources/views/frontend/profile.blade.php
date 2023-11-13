@@ -24,7 +24,7 @@
 
     <div class="col-md-4 offset-8"id="alert" >
     @if(session()->has('msg'))
-        <div class="alert alert-success"  >{{ session('msg') }}</div>
+        <div class="alert alert-success" >{{ session('msg') }}</div>
     @endif
 </div>
 
@@ -74,7 +74,7 @@
             <div class="card">
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab" >Edit Profile</a></li>
+                  <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Edit Profile</a></li>
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -136,7 +136,7 @@
 
                       <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-primary rounded-pill" >Update</button>
+                          <button type="submit" class="btn btn-primary rounded-pill ">Update</button>
                         </div>
                       </div>
                     </form>
@@ -161,7 +161,6 @@
   <script>
 
 $(document).ready(function() {
-
             setTimeout(function() {
                 $("#alert").animate({
                     opacity: 0,
@@ -171,14 +170,6 @@ $(document).ready(function() {
                     $(this).hide();
                 });
             }, 1000);
-
-
-                Toast.fire({
-                    icon: 'success',
-                    title: 'User Profile Updated Successfully. ...!'
-
-            });
-
         });
     </script>
 @endsection

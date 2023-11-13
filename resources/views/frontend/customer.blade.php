@@ -172,7 +172,7 @@
             $('#msg').click(function() {
                 Toast.fire({
                     icon: 'success',
-                    title: 'User Profile Updated Successfully. ...!'
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
                 });
             });
         });
