@@ -143,8 +143,10 @@ return "done";
         $product=Product::where("Name",$x["itemName"])->first();
         $pid=$product->id;
         $sqrFt=null;
+    
+       
         if ($x["sqrFt"] != null) {
-
+            $sqrFt=$x["sqrFt"];
             $salesqrFt = $x["sqrFt"];
             $totalsqrft = $product->Total;
             $persqrft = $product->SqrFt;
@@ -160,7 +162,7 @@ return "done";
 
 
 
-
+        
 
         if($x["quantity"]!=null)
     {
@@ -171,15 +173,15 @@ return "done";
         $product->update(["Quantity"=>$newQty]);
 
     }
-
-
+            $t=$x["total"];
+                       
                 $or->products()->attach($pid,[
 
                 "quantity"=>$x["quantity"],
                 "purchase"=>$x["rate"],
                 "discount"=>$x["dis"],
                 "sqrFt"=> $sqrFt,
-                "total"=>$x["total"],
+                "total"=>intval($t),
             ]);
 
         }

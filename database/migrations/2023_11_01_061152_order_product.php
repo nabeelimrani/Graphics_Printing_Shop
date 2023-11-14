@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer("order_id");
             $table->integer("product_id");
-             $table->integer("quantity");
+             $table->integer("quantity")->nullable();
              $table->integer("sqrFt")->nullable();
              $table->double("purchase");
              $table->integer("discount")->nullable();
