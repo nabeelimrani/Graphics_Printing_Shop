@@ -46,7 +46,7 @@ class AreaController extends Controller
 
         $area->delete();
 
-        return redirect()->route('areaview')->with('success', 'Area deleted successfully');
+        return redirect()->route('areaview')->with('success', 'Area Deleted successfully');
     }
 
     public function areaedit(Request $request, $id)
